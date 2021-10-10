@@ -1,7 +1,7 @@
 # 
 
 ![](https://img.shields.io/badge/Linter-flake8-blue)
-![](https://img.shields.io/badge/Sheduler-cron-blue)
+![](https://img.shields.io/github/pipenv/locked/python-version/Genvekt/coincap_monitor)
 
 ## System diagram
 The following system diagram represents the project structure. From the picture, it may be seen that the system is composed from 4 docker containers with following purposes:
