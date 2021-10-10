@@ -1,0 +1,13 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pytz = "==2021.3"
+requests = "==2.26.0"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
