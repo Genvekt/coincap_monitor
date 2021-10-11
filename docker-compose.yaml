@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  pipeline:
+    image: pipeline
+    container_name: pipeline
+    build:
+      context: ./
+      dockerfile: ./docker/pipeline/Dockerfile
+    volumes:
+      - ./:/app
+    environment:
+      API_KEY: ${API_KEY}
+      LOCAL_TZ: ${LOCAL_TZ}
+      COIN_ID: ${COIN_ID}
+      PIPELINE_LOG_FILE: ${PIPELINE_LOG_FILE}
+
+    
+
