@@ -14,8 +14,8 @@ services:
       API_KEY: ${API_KEY}
       LOCAL_TZ: ${LOCAL_TZ}
       COIN_ID: ${COIN_ID}
-      CRON_LOG_FILE: ${CRON_LOG_FILE}
-      PIPELINE_LOG_FILE: ${PIPELINE_LOG_FILE}
+      CRON_LOG_FILE: /var/log/cron.log
+      PIPELINE_LOG_FILE: /var/log/pipeline.log
 
     
 
