@@ -9,7 +9,7 @@ services:
       dockerfile: ./docker/pipeline/Dockerfile
     volumes:
       - ./:/app
-      - ./logging:/var/log
+      - ./logs:/var/log
     environment:
       API_KEY: ${API_KEY}
       LOCAL_TZ: ${LOCAL_TZ}
