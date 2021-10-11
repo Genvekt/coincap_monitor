@@ -9,10 +9,12 @@ services:
       dockerfile: ./docker/pipeline/Dockerfile
     volumes:
       - ./:/app
+      - ./logging:/var/log
     environment:
       API_KEY: ${API_KEY}
       LOCAL_TZ: ${LOCAL_TZ}
       COIN_ID: ${COIN_ID}
+      CRON_LOG_FILE: ${CRON_LOG_FILE}
       PIPELINE_LOG_FILE: ${PIPELINE_LOG_FILE}
 
     

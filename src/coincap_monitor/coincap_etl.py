@@ -111,7 +111,6 @@ def run_etl_cycle():
     trans_coin_info = transform_coin_info(coin_info)
 
     logger.debug(f"Cycle performed at {timestamp} -> {trans_coin_info} USD")
-    print(f"Cycle performed at {timestamp} -> {trans_coin_info} USD")
 
 
 if __name__ == "__main__":
