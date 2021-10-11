@@ -18,7 +18,7 @@ lifetime.
 
 The purpose of monitoring is informational, therefore I will update dashbord
 with 5 min interval. 
-
+___
 ## Agile Work Breakdown
 In this project I also practise the agile workflow. To do it, I define the tasks
 with Theme - Epic - User Story - Task scheme.
@@ -33,6 +33,7 @@ For the MVP, next definition covers all aspects needed:
 |     |      |5. As a user I want to see historical data as scater plot so that I can easily see patterns in data.| |
 |     |      |6. As a user I want historical data be present on revisit so that I can compare new data with old one.| |
 
+___
 ## System structure
 System stracture will be as follows: 
 
@@ -44,13 +45,13 @@ System stracture will be as follows:
 - Docker + Docker Compose for deploy
 - AWS EC2 as publicly available host
 
-
+___
 ## ETL
 As a data source I decided to use [CoinCap API](https://docs.coincap.io/). It 
 allows 200 requests/min, which is more than enough for this project.
 
 ETL python script will:
-- **(Extract)** Request API for bitcoin price in USD.
+- **(Extract)** Request API for bitcoin price in USD + track timestamp.
 - **(Staging)** Store responce unchanged with timestamp in MongoDB. 
     - **Why store?** To be able to rerun transformation scripts on already
     collected data. Usefull in situations when the requirements for 
@@ -66,3 +67,23 @@ from responce.
     have quick reporting functionality, therefore it is better to take OLAP DW
     rather than OLTP, such as PostgreSQL. + Learn how to work with Clickhouse.
 
+___
+## ETL script development
+For the ETL script I firstly implemented E and T stages with logging into .log 
+files + wrapped all insode Docker container called pipeline.
+
+Here are two .log files involved:
+- `cron.log` - main log file for cron job that must contain any warnings and 
+errors from script
+- `pipeline.log` - debug log file for ETL script, which contains detailed information about each ETL cycle - result of E+T stages or explanation why E 
+failed. 
+
+### Problem with env params
+
+The main problem was passing enviroment parameters to the cron job. I needed tem to store sensitive information, such as API KEY, and some other settings. At the same time. I wanted single `.env` file to store all parameters for clearness. The best solution I ended up is to pass parameters from `.env` file into environments in docker-compose servise. From there I then copy all variables into `/etc/environment` file using `entrypoint.sh` script. It was much better than declaring some variables directly inside crontab file, and then forget what params are declated where. Now all variables from `.env` are automatically seen by the cron job.
+
+### Result
+Script with E+T stages suits 1 and 2 user stories. 
+
+### What next:
+Develop L stage -> create warehouse container and implement user stories 3 and 4.
