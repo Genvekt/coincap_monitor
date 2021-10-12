@@ -1,6 +1,7 @@
 from datetime import datetime
 import pytz
 import requests
+from typing import Tuple
 
 
 def get_utc_timestamp() -> datetime:
@@ -29,7 +30,7 @@ def utc_to_local_tz(utc_time: datetime, time_zone: str) -> datetime:
 
 def get_coin_current_info(coin_id: str,
                           api_url: str,
-                          api_key: str) -> dict:
+                          api_key: str) -> Tuple[int, dict]:
     """
     Retrieve the current information about coin from API
 
@@ -44,9 +45,14 @@ def get_coin_current_info(coin_id: str,
     payload = {}
     headers = {'Authorization': f'Bearer {api_key}'}
 
-    responce = requests.request(
-        method="GET", url=url,
-        headers=headers, data=payload)
+    try:
+        responce = requests.get(
+            url=url,
+            headers=headers,
+            data=payload)
+
+    except requests.ConnectionError:
+        return -1, {}
 
     if responce.status_code != 200:
         return responce.status_code, {}

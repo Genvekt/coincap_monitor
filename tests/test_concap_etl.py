@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 import pytz
 import coincap_monitor.coincap_etl as etl
@@ -65,3 +66,86 @@ class TestCoincapEtl(unittest.TestCase):
 
         trans_coin_info = etl.transform_coin_info(coin_info)
         self.assertDictEqual(clean_coin_info, trans_coin_info)
+
+    def test_get_coin_current_info(self):
+        def good_responce():
+            return {
+                'data': {
+                    'id': '1234',
+                    'symbol': "X",
+                    'name': "excoin",
+                    'priceUsd': 780.03
+                }
+            }
+
+        with patch('coincap_monitor.coincap_etl.requests.get') as mocked_get:
+            # ===============================================================
+            # TEST - Good responce
+            # Define the good responce from API
+            mocked_get.return_value.status_code = 200
+            mocked_get.return_value.json = good_responce
+
+            # Call function that contains API call
+            code, test_api_responce = etl.get_coin_current_info(
+                coin_id='1234',
+                api_url='http://test.api',
+                api_key='MY_SUPER_SECRET_KEY')
+
+            # Ensure api called with required parameters
+            mocked_get.assert_called_with(
+                url='http://test.api/assets/1234',
+                headers={'Authorization': 'Bearer MY_SUPER_SECRET_KEY'},
+                data={}
+            )
+
+            # Check function behaviour
+            self.assertEqual(code, 200)
+            self.assertDictEqual(good_responce()['data'], test_api_responce)
+
+            # ===============================================================
+            # TEST - Bad responce
+            # Define the bad responce from API
+            mocked_get.return_value.status_code = 404
+
+            # Call function that contains API call
+            code, test_api_responce = etl.get_coin_current_info(
+                coin_id='some_id',
+                api_url='http://test.api',
+                api_key='MY_SUPER_SECRET_KEY_2')
+
+            # Ensure api called with required parameters
+            mocked_get.assert_called_with(
+                url='http://test.api/assets/some_id',
+                headers={'Authorization': 'Bearer MY_SUPER_SECRET_KEY_2'},
+                data={}
+            )
+
+            # Check function behaviour
+            self.assertEqual(code, 404)
+            self.assertDictEqual({}, test_api_responce)
+
+            # ===============================================================
+            # TEST - connection error
+            # Define connection error situation
+            mocked_get.side_effect = etl.requests.ConnectionError()
+
+            # Call function that contains API call
+            code, test_api_responce = etl.get_coin_current_info(
+                coin_id='some_id_2',
+                api_url='http://test_bad.api',
+                api_key='MY_SUPER_SECRET_KEY_3')
+
+            # Ensure api called with required parameters
+            mocked_get.assert_called_with(
+                url='http://test_bad.api/assets/some_id_2',
+                headers={'Authorization': 'Bearer MY_SUPER_SECRET_KEY_3'},
+                data={}
+            )
+
+            # Check function behaviour
+            self.assertEqual(code, -1)
+            self.assertDictEqual({}, test_api_responce)
+
+
+if __name__ == "__main__":
+    unittest.main()

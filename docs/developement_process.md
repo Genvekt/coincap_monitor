@@ -82,6 +82,12 @@ failed.
 
 The main problem was passing enviroment parameters to the cron job. I needed tem to store sensitive information, such as API KEY, and some other settings. At the same time. I wanted single `.env` file to store all parameters for clearness. The best solution I ended up is to pass parameters from `.env` file into environments in docker-compose servise. From there I then copy all variables into `/etc/environment` file using `entrypoint.sh` script. It was much better than declaring some variables directly inside crontab file, and then forget what params are declated where. Now all variables from `.env` are automatically seen by the cron job.
 
+### Tests
+Having E+T functionality is enough to start covering the code with tests.
+For this purpuse I use `unittest` module and include tests in separate `tests/` directory.
+
+When testing simple functions such as datetime and api response transformation is straight forward, testing API calls require some mocking. Therefore, for testing function that retrieves data from API, I patch `requests.get` function from `coincap_monitor.coincap_etl` module with `unittest.mock.patch` context manager. It allows me to test API independently from site/internet availability.
+
 ### Result
 Script with E+T stages suits 1 and 2 user stories. 
 
