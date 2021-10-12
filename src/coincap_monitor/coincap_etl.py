@@ -1,28 +1,6 @@
 from datetime import datetime
-import os
 import pytz
-import logging
 import requests
-from typing import Optional
-
-# Retrieve invironment variables
-
-API_URL = 'http://api.coincap.io/v2'
-API_KEY = os.environ.get('API_KEY')
-LOCAL_TZ = os.environ.get('LOCAL_TZ')
-COIN_ID = os.environ.get('COIN_ID')
-LOG_FILE = os.environ.get('PIPELINE_LOG_FILE')
-
-# Configure logger
-
-logger = logging.getLogger(name=__name__)
-formatter = logging.Formatter("%(asctime)s | %(levelname)s | %(message)s")
-
-file_handler = logging.FileHandler(LOG_FILE)
-file_handler.setFormatter(formatter)
-
-logger.setLevel(logging.DEBUG)
-logger.addHandler(file_handler)
 
 
 def get_utc_timestamp() -> datetime:
@@ -49,7 +27,9 @@ def utc_to_local_tz(utc_time: datetime, time_zone: str) -> datetime:
     return local_time
 
 
-def get_coin_current_info(coin_id: str) -> Optional[dict]:
+def get_coin_current_info(coin_id: str,
+                          api_url: str,
+                          api_key: str) -> dict:
     """
     Retrieve the current information about coin from API
 
@@ -60,21 +40,18 @@ def get_coin_current_info(coin_id: str) -> Optional[dict]:
         of responce is 200, None otherwise
     """
 
-    url = f"{API_URL}/assets/{coin_id}"
+    url = f"{api_url}/assets/{coin_id}"
     payload = {}
-    headers = {'Authorization': f'Bearer {API_KEY}'}
+    headers = {'Authorization': f'Bearer {api_key}'}
 
     responce = requests.request(
         method="GET", url=url,
         headers=headers, data=payload)
 
     if responce.status_code != 200:
-        logger.warning(
-            f"API returned status code {responce.status_code},\
-            cannot retrieve answer.")
-        return None
+        return responce.status_code, {}
 
-    return responce.json()['data']
+    return responce.status_code, responce.json()['data']
 
 
 def transform_coin_info(coin_info: dict) -> dict:
@@ -92,26 +69,3 @@ def transform_coin_info(coin_info: dict) -> dict:
         if key in keys_of_interest
     }
     return transformed_info
-
-
-def run_etl_cycle():
-    # ----------------
-    # STEP 1: Extract
-    # ----------------
-    # Request information from API
-    coin_info = get_coin_current_info(COIN_ID)
-    # Get current Timestamp
-    timestamp = get_utc_timestamp()
-    timestamp = utc_to_local_tz(timestamp, LOCAL_TZ)
-
-    # ------------------
-    # STEP 2: Transform
-    # ------------------
-    # Clean the API responce
-    trans_coin_info = transform_coin_info(coin_info)
-
-    logger.debug(f"Cycle performed at {timestamp} -> {trans_coin_info} USD")
-
-
-if __name__ == "__main__":
-    run_etl_cycle()

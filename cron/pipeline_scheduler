@@ -1,3 +1,3 @@
 SHELL=/bin/bash
 HOME=/
-* * * * *  PYTHONPATH=/app/src /usr/local/bin/python /app/src/coincap_monitor/coincap_etl.py >> $CRON_LOG_FILE 2>&1
+* * * * *  PYTHONPATH=/app/src /usr/local/bin/python /app/src/coincap_monitor/etl_runner.py >> $CRON_LOG_FILE 2>&1
