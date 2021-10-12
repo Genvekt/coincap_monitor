@@ -4,6 +4,8 @@
 ![](https://img.shields.io/badge/Docker-20.10.7-blue)
 ![](https://img.shields.io/badge/docker_compose-1.29.2-blue)
 
+![example workflow](https://github.com/Genvekt/coincap_monitor/actions/workflows/linter_ckeck.yml/badge.svg)
+
 ETL pipeline for monitoring cripto curency price and build analytical dashboard based on collected data.
 
 ## System diagram
