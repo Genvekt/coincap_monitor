@@ -1,10 +1,13 @@
-# CoinCap monitor
-![](https://img.shields.io/badge/Linter-flake8-blue)
+# CoinCap monitor 
+
+### Status
+![example workflow](https://github.com/Genvekt/coincap_monitor/actions/workflows/linter_check.yml/badge.svg)
+
+### Build with
 ![](https://img.shields.io/github/pipenv/locked/python-version/Genvekt/coincap_monitor)
 ![](https://img.shields.io/badge/Docker-20.10.7-blue)
 ![](https://img.shields.io/badge/docker_compose-1.29.2-blue)
 
-![example workflow](https://github.com/Genvekt/coincap_monitor/actions/workflows/linter_ckeck.yml/badge.svg)
 
 ETL pipeline for monitoring cripto curency price and build analytical dashboard based on collected data.
 

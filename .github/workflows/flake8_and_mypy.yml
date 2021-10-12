@@ -1,6 +1,6 @@
 # 
 
-name: Linter_check
+name: flake8_and_mypy
 
 # Controls when the workflow will run
 on:
