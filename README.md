@@ -1,7 +1,7 @@
 # CoinCap monitor 
 
 ### Status
-![example workflow](https://github.com/Genvekt/coincap_monitor/actions/workflows/linter_check.yml/badge.svg)
+[![example workflow](https://github.com/Genvekt/coincap_monitor/actions/workflows/flake8_and_mypy.yml/badge.svg)](https://github.com/Genvekt/coincap_monitor/actions/workflows/flake8_and_mypy.yml)
 
 ### Build with
 ![](https://img.shields.io/github/pipenv/locked/python-version/Genvekt/coincap_monitor)
