@@ -94,8 +94,7 @@ class TestCoincapEtl(unittest.TestCase):
             # Ensure api called with required parameters
             mocked_get.assert_called_with(
                 url='http://test.api/assets/1234',
-                headers={'Authorization': 'Bearer MY_SUPER_SECRET_KEY'},
-                data={}
+                headers={'Authorization': 'Bearer MY_SUPER_SECRET_KEY'}
             )
 
             # Check function behaviour
@@ -116,8 +115,7 @@ class TestCoincapEtl(unittest.TestCase):
             # Ensure api called with required parameters
             mocked_get.assert_called_with(
                 url='http://test.api/assets/some_id',
-                headers={'Authorization': 'Bearer MY_SUPER_SECRET_KEY_2'},
-                data={}
+                headers={'Authorization': 'Bearer MY_SUPER_SECRET_KEY_2'}
             )
 
             # Check function behaviour
@@ -138,8 +136,7 @@ class TestCoincapEtl(unittest.TestCase):
             # Ensure api called with required parameters
             mocked_get.assert_called_with(
                 url='http://test_bad.api/assets/some_id_2',
-                headers={'Authorization': 'Bearer MY_SUPER_SECRET_KEY_3'},
-                data={}
+                headers={'Authorization': 'Bearer MY_SUPER_SECRET_KEY_3'}
             )
 
             # Check function behaviour

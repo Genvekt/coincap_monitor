@@ -1,4 +1,6 @@
 pytz==2021.3
+types-pytz==2021.3.0 
 requests==2.26.0
+types-requests==2.25.10 
 mypy==0.910 
 flake8==4.0.1 

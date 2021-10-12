@@ -8,7 +8,10 @@ API_URL = 'http://api.coincap.io/v2'
 API_KEY = os.environ.get('API_KEY')
 LOCAL_TZ = os.environ.get('LOCAL_TZ')
 COIN_ID = os.environ.get('COIN_ID')
+
 LOG_FILE = os.environ.get('PIPELINE_LOG_FILE')
+if not LOG_FILE:
+    LOG_FILE = 'pipeline.log'
 
 # Configure logger
 

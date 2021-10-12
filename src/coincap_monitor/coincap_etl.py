@@ -42,14 +42,12 @@ def get_coin_current_info(coin_id: str,
     """
 
     url = f"{api_url}/assets/{coin_id}"
-    payload = {}
     headers = {'Authorization': f'Bearer {api_key}'}
 
     try:
         responce = requests.get(
             url=url,
-            headers=headers,
-            data=payload)
+            headers=headers)
 
     except requests.ConnectionError:
         return -1, {}
