@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Get repository
-        uses: actions/chekout@v2
+        uses: actions/checkout@v2
       - name: Install python
         uses: actions/setup-python@v2
         with:
