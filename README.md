@@ -1,26 +1,33 @@
+
 # CoinCap monitor 
 
-### Status
-[![example workflow](https://github.com/Genvekt/coincap_monitor/actions/workflows/flake8_and_mypy.yml/badge.svg)](https://github.com/Genvekt/coincap_monitor/actions/workflows/flake8_and_mypy.yml)
+ETL pipeline for monitoring cripto curency price and build analytical dashboard based on collected data inside Data Warehouse.
 
-### Build with
+
+[![example workflow](https://img.shields.io/github/workflow/status/Genvekt/coincap_monitor/flake8_and_mypy?label=code%20quality&logo=github&style=for-the-badge)](https://github.com/Genvekt/coincap_monitor/actions/workflows/flake8_and_mypy.yml)
+[![example workflow](https://img.shields.io/github/workflow/status/Genvekt/coincap_monitor/Tests?label=tests&logo=github&style=for-the-badge)](https://github.com/Genvekt/coincap_monitor/actions/workflows/tests.yml)
+
+## Built with
 ![](https://img.shields.io/github/pipenv/locked/python-version/Genvekt/coincap_monitor)
 ![](https://img.shields.io/badge/Docker-20.10.7-blue)
 ![](https://img.shields.io/badge/docker_compose-1.29.2-blue)
 
 
-ETL pipeline for monitoring cripto curency price and build analytical dashboard based on collected data.
-
 ## System diagram
 The following system diagram represents the project structure. From the picture, it may be seen that the system is composed from 4 docker containers with following purposes:
-- **pipeline** perform complete ETL cycle (cron job)
+- **pipeline** performs complete ETL cycle (cron job)
 - **warehause** contains main storage of cleaned data (Clickhouse)
-- **stagedb** plays role of backup storage for raw data (MongoDB)
+- **stagedb** plays the role of a backup storage for raw data (MongoDB)
 - **dashboard** generates and shows reports out of cleaned data (Metabase)
 
 ![system design](https://github.com/Genvekt/coincap_monitor/blob/main/assets/coincap_monitor.png)
 
-## How to run
+## Project Structure
+
+```
+```
+
+## Installation
 
 To run the project, perform the following steps:
 1. Clone repo to your machine
@@ -44,7 +51,7 @@ cd coincap_monitor
 ```
 docker-compose run --build -d
 ```
-4. To stop applicaation:
+4. Stop application:
 ```
 docker-compose down -v
 ```
