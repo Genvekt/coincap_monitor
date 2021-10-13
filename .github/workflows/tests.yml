@@ -11,7 +11,7 @@ on:
     branches: [ main ]
 
 jobs:
-  linter_check:
+  run_tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r docker/pipeline/requirements.txt
-          export PYTHONPATH=./src
+          export PYTHONPATH=$(pwd)/src
           printenv PYTHONPATH
       - name: Run ETL tests
         run: python tests/test_concap_etl.py
