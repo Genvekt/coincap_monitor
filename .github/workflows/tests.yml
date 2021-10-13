@@ -27,6 +27,7 @@ jobs:
           pip install -r docker/pipeline/requirements.txt
           export PYTHONPATH=$(pwd)/src
           printenv PYTHONPATH
+          ls
       - name: Run ETL tests
         run: python tests/test_concap_etl.py
       
