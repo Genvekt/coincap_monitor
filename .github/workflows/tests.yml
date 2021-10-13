@@ -25,9 +25,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r docker/pipeline/requirements.txt
-          export PYTHONPATH=$(pwd)/src
-          printenv PYTHONPATH
-          ls
+          echo "PYTHONPATH=$(pwd)/src" >> $GITHUB_ENV
       - name: Run ETL tests
         run: python tests/test_concap_etl.py
       
