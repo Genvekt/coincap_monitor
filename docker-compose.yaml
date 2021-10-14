@@ -2,6 +2,9 @@ version: '3'
 
 services:
   pipeline:
+    depends_on:
+      warehouse:
+        condition: service_healthy
     image: pipeline
     container_name: pipeline
     build:
@@ -16,6 +19,43 @@ services:
       COIN_ID: ${COIN_ID}
       CRON_LOG_FILE: /var/log/cron.log
       PIPELINE_LOG_FILE: /var/log/pipeline.log
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+      CLICKHOUSE_PORT: ${CLICKHOUSE_PORT}
+    networks:
+      - default
+
+  warehouse:
+    image: yandex/clickhouse-server
+    container_name: warehouse
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+      - "9009:9009"
+    ulimits:
+      nproc: 65535
+      nofile:
+       soft: 262144
+       hard: 262144
+    environment:
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+      CLICKHOUSE_PORT: ${CLICKHOUSE_PORT}
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "localhost:8123/ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - default
+
+networks:
+  default:
+    external:
+      name: CoinCapNet
+
 
     
 

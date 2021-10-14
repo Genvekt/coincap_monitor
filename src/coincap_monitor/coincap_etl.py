@@ -72,4 +72,6 @@ def transform_coin_info(coin_info: dict) -> dict:
         key: value for key, value in coin_info.items()
         if key in keys_of_interest
     }
+    if 'priceUsd' in transformed_info:
+        transformed_info['priceUsd'] = float(transformed_info['priceUsd'])
     return transformed_info

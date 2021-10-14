@@ -8,6 +8,7 @@ ENV PYTHONPATH=/app/src
 RUN apt-get update && apt-get install cron -y
 
 # Install all requirements
+RUN python -m pip install --upgrade pip
 ADD ./docker/pipeline/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 

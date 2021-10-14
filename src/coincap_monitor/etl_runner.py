@@ -2,6 +2,8 @@ import os
 import logging
 import coincap_monitor.coincap_etl as etl
 
+from coincap_monitor.db import client
+
 # Retrieve invironment variables
 
 API_URL = 'http://api.coincap.io/v2'
@@ -45,6 +47,17 @@ def run_etl_cycle():
     # ------------------
     # Clean the API responce
     trans_coin_info = etl.transform_coin_info(coin_info)
+
+    if len(trans_coin_info) > 0:
+        client.execute(
+            'INSERT INTO coincap (id, symbol, name, priceUsd, timestamp) VALUES',
+            [(
+                trans_coin_info['id'],
+                trans_coin_info['symbol'],
+                trans_coin_info['name'],
+                trans_coin_info['priceUsd'],
+                timestamp)]
+        )
 
     logger.debug(f"Cycle performed at {timestamp} -> {trans_coin_info} USD")
 
