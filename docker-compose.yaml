@@ -8,17 +8,18 @@ services:
     image: pipeline
     container_name: pipeline
     build:
-      context: ./
-      dockerfile: ./docker/pipeline/Dockerfile
+      context: ./pipeline
+      dockerfile: ./docker/Dockerfile
     volumes:
-      - ./:/app
-      - ./logs:/var/log
+      - ./pipeline:/app
+      - ${PIPELINE_LOG_DIR}:/var/log
     environment:
+      API_URL: ${API_URL}
       API_KEY: ${API_KEY}
-      LOCAL_TZ: ${LOCAL_TZ}
       COIN_ID: ${COIN_ID}
       CRON_LOG_FILE: /var/log/cron.log
       PIPELINE_LOG_FILE: /var/log/pipeline.log
+      CLICKHOUSE_HOST: ${CLICKHOUSE_HOST}
       CLICKHOUSE_DB: ${CLICKHOUSE_DB}
       CLICKHOUSE_USER: ${CLICKHOUSE_USER}
       CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
@@ -43,11 +44,54 @@ services:
       CLICKHOUSE_USER: ${CLICKHOUSE_USER}
       CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
       CLICKHOUSE_PORT: ${CLICKHOUSE_PORT}
+    volumes:
+      - ${WAREHOUSE_LOG_DIR}/log:/var/log/clickhouse-server
+      - ${WAREHOUSE_DB_DIR}/data:/var/lib/clickhouse
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "localhost:8123/ping"]
       interval: 30s
       timeout: 5s
       retries: 3
+    networks:
+      - default
+  
+  dashboard:
+    image: dashboard
+    container_name: dashboard
+    build:
+      context: ./dashboard/docker
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: ${POSTGRES_DB}
+      MB_DB_PORT: ${POSTGRES_PORT}
+      MB_DB_USER: ${POSTGRES_USER}
+      MB_DB_PASS: ${POSTGRES_PASSWORD}
+      MB_DB_HOST: dashboard_db
+    depends_on:
+      dashboard_db:
+        condition: service_healthy
+    networks:
+      - default
+
+  dashboard_db:
+    image: postgres
+    container_name: dashboard_db
+    volumes:
+      - ${DASHBOARD_DB_DIR}:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    ports:
+      - "${DASHBOARD_DB_PORT}:${POSTGRES_PORT}"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_DB}"]
+      interval: 5s
+      retries: 5
+    restart: always
     networks:
       - default
 

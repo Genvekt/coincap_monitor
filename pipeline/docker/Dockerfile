@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install cron -y
 
 # Install all requirements
 RUN python -m pip install --upgrade pip
-ADD ./docker/pipeline/requirements.txt requirements.txt
+ADD ./docker/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Copy all source code
@@ -26,4 +26,4 @@ RUN touch /var/log/cron.log
 
 # Pass environment variables to cron
 # And run scheduler with log monitor
-ENTRYPOINT /app/docker/pipeline/entrypoint.sh
+ENTRYPOINT /app/docker/entrypoint.sh

@@ -25,6 +25,32 @@ The following system diagram represents the project structure. From the picture,
 ## Project Structure
 
 ```
+├── assets
+├── docs
+│
+├── pipeline
+│   ├── cron              # Scheduler configs
+│   ├── docker            # Environment configs
+│   ├── logs              # Logs for pipeline service
+│   │
+│   ├── src               # ETL source code
+│   │   ├── config.py     # Enviroment parsers
+│   │   ├── db.py         # Warehouse management
+│   │   ├── etl.py        # ETL functions
+│   │   └── run.py        # Pipeline script
+│   │
+│   └── tests             # Unittests for ETL source code
+│
+├── warehouse
+│   ├── db                # Warehouse database files (Clickhouse)
+│   └── logs              # Logs for warehouse service
+│
+└── dashboard
+    ├── db                # Dashboard database files (PostgreSQL)
+    ├── docker            # Environment configs
+    └── logs              # Logs for dashboard service
+
+
 ```
 
 ## Installation

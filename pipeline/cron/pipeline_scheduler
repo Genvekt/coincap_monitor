@@ -1,0 +1,4 @@
+SHELL=/bin/bash
+HOME=/
+* * * * *  PYTHONPATH=/app/src COIN_ID=bitcoin /usr/local/bin/python /app/src/run.py >> $CRON_LOG_FILE 2>&1
+* * * * *  PYTHONPATH=/app/src COIN_ID=ethereum /usr/local/bin/python /app/src/run.py >> $CRON_LOG_FILE 2>&1

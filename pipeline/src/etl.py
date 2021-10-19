@@ -2,6 +2,7 @@ from datetime import datetime
 import pytz
 import requests
 from typing import Tuple
+from config import APIConf
 
 
 def get_utc_timestamp() -> datetime:
@@ -28,21 +29,19 @@ def utc_to_local_tz(utc_time: datetime, time_zone: str) -> datetime:
     return local_time
 
 
-def get_coin_current_info(coin_id: str,
-                          api_url: str,
-                          api_key: str) -> Tuple[int, dict]:
+def get_coin_current_info(conf: APIConf) -> Tuple[int, dict]:
     """
     Retrieve the current information about coin from API
 
     Args:
-        - coin_id (str): id of a coin withing API
+        - conf (APIConf): api confiqurations
 
     Returns: dict with all information if status_code
         of responce is 200, None otherwise
     """
 
-    url = f"{api_url}/assets/{coin_id}"
-    headers = {'Authorization': f'Bearer {api_key}'}
+    url = f"{conf.url}/assets/{conf.coin_id}"
+    headers = {'Authorization': f'Bearer {conf.key}'}
 
     try:
         responce = requests.get(
@@ -75,3 +74,42 @@ def transform_coin_info(coin_info: dict) -> dict:
     if 'priceUsd' in transformed_info:
         transformed_info['priceUsd'] = float(transformed_info['priceUsd'])
     return transformed_info
+
+
+def prepare_for_insert(coin_info: dict, timestamp: datetime) -> \
+        Tuple[str, str, str, float, datetime]:
+    return (
+        coin_info['id'],
+        coin_info['symbol'],
+        coin_info['name'],
+        coin_info['priceUsd'],
+        timestamp
+    )
+
+
+def get_coincap_insert_query() -> str:
+    return '''
+        INSERT INTO exchange (
+            id,
+            symbol,
+            name,
+            priceUsd,
+            timestamp)
+        VALUES
+    '''
+
+
+def get_coincap_create_query() -> str:
+    return """
+        CREATE TABLE IF NOT EXISTS exchange
+        (
+            id String,
+            symbol String,
+            name String,
+            priceUsd Float32,
+            timestamp DateTime('UTC')
+        )
+        ENGINE = MergeTree
+        PARTITION BY toYYYYMMDD(timestamp)
+        ORDER BY (timestamp)
+    """

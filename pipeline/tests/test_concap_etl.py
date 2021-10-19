@@ -2,7 +2,8 @@ import unittest
 from unittest.mock import patch
 
 import pytz
-import coincap_monitor.coincap_etl as etl
+import etl
+from config import APIConf
 from datetime import datetime
 
 
@@ -78,18 +79,19 @@ class TestCoincapEtl(unittest.TestCase):
                 }
             }
 
-        with patch('coincap_monitor.coincap_etl.requests.get') as mocked_get:
+        with patch('etl.requests.get') as mocked_get:
             # ===============================================================
             # TEST - Good responce
             # Define the good responce from API
             mocked_get.return_value.status_code = 200
             mocked_get.return_value.json = good_responce
 
-            # Call function that contains API call
-            code, test_api_responce = etl.get_coin_current_info(
+            api_conf = APIConf(
                 coin_id='1234',
-                api_url='http://test.api',
-                api_key='MY_SUPER_SECRET_KEY')
+                url='http://test.api',
+                key='MY_SUPER_SECRET_KEY')
+            # Call function that contains API call
+            code, test_api_responce = etl.get_coin_current_info(api_conf)
 
             # Ensure api called with required parameters
             mocked_get.assert_called_with(
@@ -106,11 +108,13 @@ class TestCoincapEtl(unittest.TestCase):
             # Define the bad responce from API
             mocked_get.return_value.status_code = 404
 
-            # Call function that contains API call
-            code, test_api_responce = etl.get_coin_current_info(
+            api_conf = APIConf(
                 coin_id='some_id',
-                api_url='http://test.api',
-                api_key='MY_SUPER_SECRET_KEY_2')
+                url='http://test.api',
+                key='MY_SUPER_SECRET_KEY_2')
+
+            # Call function that contains API call
+            code, test_api_responce = etl.get_coin_current_info(api_conf)
 
             # Ensure api called with required parameters
             mocked_get.assert_called_with(
@@ -127,11 +131,13 @@ class TestCoincapEtl(unittest.TestCase):
             # Define connection error situation
             mocked_get.side_effect = etl.requests.ConnectionError()
 
-            # Call function that contains API call
-            code, test_api_responce = etl.get_coin_current_info(
+            api_conf = APIConf(
                 coin_id='some_id_2',
-                api_url='http://test_bad.api',
-                api_key='MY_SUPER_SECRET_KEY_3')
+                url='http://test_bad.api',
+                key='MY_SUPER_SECRET_KEY_3')
+
+            # Call function that contains API call
+            code, test_api_responce = etl.get_coin_current_info(api_conf)
 
             # Ensure api called with required parameters
             mocked_get.assert_called_with(
