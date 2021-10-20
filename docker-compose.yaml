@@ -1,4 +1,4 @@
-version: '3'
+version: '3.3'
 
 services:
   pipeline:
@@ -82,13 +82,13 @@ services:
     volumes:
       - ${DASHBOARD_DB_DIR}:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "${DASHBOARD_DB_PORT}:${POSTGRES_PORT}"
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${POSTGRES_DB}"]
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
       interval: 5s
       retries: 5
     restart: always
