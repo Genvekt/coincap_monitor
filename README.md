@@ -1,6 +1,7 @@
 
 # CoinCap monitor 
 
+
 ETL pipeline for monitoring cripto curency price and build analytical dashboard based on collected data inside Data Warehouse.
 
 
