@@ -150,6 +150,19 @@ class TestCoincapEtl(unittest.TestCase):
             self.assertEqual(code, -1)
             self.assertDictEqual({}, test_api_responce)
 
+    def test_prepare_for_insert(self) -> None:
+        info = {
+            'id': "1234",
+            'symbol': "X",
+            'name': "excoin",
+            'priceUsd': "780.03"
+        }
+        timestamp = datetime.utcnow()
+        prepared_info = ("1234", "X", "excoin", 780.03, timestamp)
+
+        func_out = etl.prepare_for_insert(info, timestamp)
+        self.assertTupleEqual(prepared_info, func_out)
+
 
 if __name__ == "__main__":
     unittest.main()
