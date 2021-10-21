@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import patch
+from typing import Dict
 
 import pytz
 import src.etl as etl
@@ -9,7 +10,7 @@ from datetime import datetime
 
 class TestCoincapEtl(unittest.TestCase):
 
-    def test_utc_to_local_tz(self):
+    def test_utc_to_local_tz(self) -> None:
         # UTC timestamp
         utc_time = datetime.utcnow()
         utc_aware_time = pytz.timezone("UTC").localize(utc_time)
@@ -29,14 +30,14 @@ class TestCoincapEtl(unittest.TestCase):
         hour_diff = (utc_aware_time-tz_time).seconds
         self.assertEqual(hour_diff, 9*60*60)
 
-    def test_transform_coin_info(self):
+    def test_transform_coin_info(self) -> None:
 
         # Test - Nothing to change
         coin_info = {
-            'id': 1234,
+            'id': "1234",
             'symbol': "X",
             'name': "excoin",
-            'priceUsd': 780.03
+            'priceUsd': "780.03"
         }
 
         trans_coin_info = etl.transform_coin_info(coin_info)
@@ -50,32 +51,32 @@ class TestCoincapEtl(unittest.TestCase):
 
         # Test - Delete unwanted keys
         coin_info = {
-            'id': 1234,
+            'id': "1234",
             'symbol': "X",
             'name': "excoin",
-            'priceUsd': 780.03,
+            'priceUsd': "780.03",
             'some_key_1': "some_value",
-            'some_key_2': 374637
+            'some_key_2': "374637"
         }
 
         clean_coin_info = {
-            'id': 1234,
+            'id': "1234",
             'symbol': "X",
             'name': "excoin",
-            'priceUsd': 780.03
+            'priceUsd': "780.03"
         }
 
         trans_coin_info = etl.transform_coin_info(coin_info)
         self.assertDictEqual(clean_coin_info, trans_coin_info)
 
-    def test_get_coin_current_info(self):
-        def good_responce():
+    def test_get_coin_current_info(self) -> None:
+        def good_responce() -> Dict[str, Dict[str, str]]:
             return {
                 'data': {
-                    'id': '1234',
+                    'id': "1234",
                     'symbol': "X",
                     'name': "excoin",
-                    'priceUsd': 780.03
+                    'priceUsd': "780.03"
                 }
             }
 
