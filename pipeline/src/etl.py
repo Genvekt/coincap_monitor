@@ -1,7 +1,7 @@
 from datetime import datetime
 import pytz
 import requests
-from typing import Tuple, Dict, Union
+from typing import Tuple, Dict
 from src.config import APIConf
 
 
