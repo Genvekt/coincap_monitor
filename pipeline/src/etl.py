@@ -59,7 +59,7 @@ def get_coin_current_info(
 
 
 def transform_coin_info(
-        coin_info: Dict[str, str]) -> Dict[str, Union[str, float]]:
+        coin_info: Dict[str, str]) -> Dict[str, str]:
     """
     Clear API responce from unwanted information
 
@@ -69,26 +69,22 @@ def transform_coin_info(
     Return: clean dictionary withount unwanted keys
     """
     keys_of_interest = ('id', 'symbol', 'name', 'priceUsd')
-    transformed_info: Dict[str, Union[str, float]]
     transformed_info = {
         key: value for key, value in coin_info.items()
         if key in keys_of_interest
     }
-    if 'priceUsd' in transformed_info:
-        transformed_info['priceUsd'] = float(transformed_info['priceUsd'])
     return transformed_info
 
 
 def prepare_for_insert(
-    coin_info: Dict[str, Union[str, float]],
-    timestamp: datetime) -> \
+    coin_info: Dict[str, str], timestamp: datetime) -> \
         Tuple[str, str, str, float, datetime]:
 
     return (
         coin_info['id'],
         coin_info['symbol'],
         coin_info['name'],
-        coin_info['priceUsd'],
+        float(coin_info['priceUsd']),
         timestamp
     )
 

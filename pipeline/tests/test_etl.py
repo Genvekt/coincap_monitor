@@ -79,7 +79,7 @@ class TestCoincapEtl(unittest.TestCase):
                 }
             }
 
-        with patch('etl.requests.get') as mocked_get:
+        with patch('src.etl.requests.get') as mocked_get:
             # ===============================================================
             # TEST - Good responce
             # Define the good responce from API
