@@ -80,7 +80,7 @@ def transform_coin_info(
 
 
 def prepare_for_insert(
-    coin_info: Dict[str, Union[str, float]], 
+    coin_info: Dict[str, Union[str, float]],
     timestamp: datetime) -> \
         Tuple[str, str, str, float, datetime]:
 

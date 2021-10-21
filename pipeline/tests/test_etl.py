@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import pytz
 import src.etl as etl
-from config import APIConf
+from src.config import APIConf
 from datetime import datetime
 
 
