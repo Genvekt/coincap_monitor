@@ -29,7 +29,8 @@ def utc_to_local_tz(utc_time: datetime, time_zone: str) -> datetime:
     return local_time
 
 
-def get_coin_current_info(conf: APIConf) -> Tuple[int, Dict[str, str]]:
+def get_coin_current_info(
+        conf: APIConf) -> Tuple[int, Dict[str, str]]:
     """
     Retrieve the current information about coin from API
 
@@ -68,6 +69,7 @@ def transform_coin_info(
     Return: clean dictionary withount unwanted keys
     """
     keys_of_interest = ('id', 'symbol', 'name', 'priceUsd')
+    transformed_info: Dict[str, Union[str, float]]
     transformed_info = {
         key: value for key, value in coin_info.items()
         if key in keys_of_interest
@@ -77,8 +79,11 @@ def transform_coin_info(
     return transformed_info
 
 
-def prepare_for_insert(coin_info: dict, timestamp: datetime) -> \
+def prepare_for_insert(
+    coin_info: Dict[str, Union[str, float]], 
+    timestamp: datetime) -> \
         Tuple[str, str, str, float, datetime]:
+
     return (
         coin_info['id'],
         coin_info['symbol'],

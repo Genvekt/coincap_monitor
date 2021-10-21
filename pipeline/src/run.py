@@ -22,7 +22,7 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(file_handler)
 
 
-def run_etl_cycle():
+def run_etl_cycle() -> None:
     # ----------------
     # STEP 1: Extract
     # ----------------
