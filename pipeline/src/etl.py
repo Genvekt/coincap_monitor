@@ -1,7 +1,7 @@
 from datetime import datetime
 import pytz
 import requests
-from typing import Tuple
+from typing import Tuple, Dict, Union
 from src.config import APIConf
 
 
@@ -29,7 +29,7 @@ def utc_to_local_tz(utc_time: datetime, time_zone: str) -> datetime:
     return local_time
 
 
-def get_coin_current_info(conf: APIConf) -> Tuple[int, dict]:
+def get_coin_current_info(conf: APIConf) -> Tuple[int, Dict[str,str]]:
     """
     Retrieve the current information about coin from API
 
@@ -57,7 +57,7 @@ def get_coin_current_info(conf: APIConf) -> Tuple[int, dict]:
     return responce.status_code, responce.json()['data']
 
 
-def transform_coin_info(coin_info: dict) -> dict:
+def transform_coin_info(coin_info: Dict[str,str]) -> Dict[str,Union[str, float]]:
     """
     Clear API responce from unwanted information
 
