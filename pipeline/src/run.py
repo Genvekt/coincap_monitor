@@ -2,9 +2,9 @@ import os
 import logging
 import clickhouse_driver
 
-import etl
-from config import get_api_conf, get_warehouse_conf
-from db import WarehouseConnection
+import src.etl as etl
+from src.config import get_api_conf, get_warehouse_conf
+from src.db import WarehouseConnection
 
 
 # Retrieve invironment variables

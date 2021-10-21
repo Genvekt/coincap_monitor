@@ -25,12 +25,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r pipeline/docker/requirements.txt
+          echo "PYTHONPATH=$(pwd)/pipeline" >> $GITHUB_ENV
       - name: Run flake8 on source code
         run: flake8 ./pipeline/src
       - name: Run flake8 on tests
         run: flake8 ./pipeline/tests
       - name: Run mypy on source code
-        run: mypy ./pipeline/src
+        run: mypy --config-file mypy.ini --ignore-missing-imports --strict --warn-unreachable ./pipeline/src
       - name: Run mypy on tests
-        run: mypy ./pipeline/tests
+        run: mypy --config-file mypy.ini --ignore-missing-imports --strict --warn-unreachable ./pipeline/tests
       

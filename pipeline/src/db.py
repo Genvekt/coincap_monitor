@@ -1,6 +1,6 @@
 from clickhouse_driver import Client
 from contextlib import contextmanager
-from config import WarehouseConfig
+from src.config import WarehouseConfig
 
 
 class WarehouseConnection:

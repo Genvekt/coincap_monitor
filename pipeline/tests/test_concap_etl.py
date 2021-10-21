@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 import pytz
-import etl
+import src.etl as etl
 from config import APIConf
 from datetime import datetime
 

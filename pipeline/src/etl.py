@@ -2,7 +2,7 @@ from datetime import datetime
 import pytz
 import requests
 from typing import Tuple
-from config import APIConf
+from src.config import APIConf
 
 
 def get_utc_timestamp() -> datetime:
