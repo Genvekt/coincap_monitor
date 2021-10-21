@@ -27,5 +27,5 @@ jobs:
           pip install -r pipeline/docker/requirements.txt
           echo "PYTHONPATH=$(pwd)/pipeline" >> $GITHUB_ENV
       - name: Run ETL tests
-        run: python tests/test_concap_etl.py
+        run: python pipeline/tests/test_etl.py
       
