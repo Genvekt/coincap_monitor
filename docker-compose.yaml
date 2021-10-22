@@ -14,11 +14,10 @@ services:
       dockerfile: ./docker/Dockerfile
     volumes:
       - ./pipeline:/app
-      - ${PIPELINE_LOG_DIR}:/var/log
+      - ./pipeline/logs:/var/log
     environment:
       API_URL: ${API_URL}
       API_KEY: ${API_KEY}
-      COIN_ID: ${COIN_ID}
       CRON_LOG_FILE: /var/log/cron.log
       PIPELINE_LOG_FILE: /var/log/pipeline.log
       CLICKHOUSE_HOST: ${CLICKHOUSE_HOST}
@@ -43,10 +42,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${STAGEDB_PASSWORD}
       MONGO_INITDB_DATABASE: ${STAGEDB_DB}
       MONGODB_DATA_DIR: /data/db
-    ports:
-      - "8010:${STAGEDB_PORT}"
     volumes:
-      - ${STAGEDB_DB_DIR}:/data/db
+      - ./stagedb/db/data:/data/db
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo localhost:${STAGEDB_PORT}/${STAGEDB_DB} --quiet
       interval: 10s
@@ -74,8 +71,8 @@ services:
       CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
       CLICKHOUSE_PORT: ${CLICKHOUSE_PORT}
     volumes:
-      - ${WAREHOUSE_LOG_DIR}/log:/var/log/clickhouse-server
-      - ${WAREHOUSE_DB_DIR}/data:/var/lib/clickhouse
+      - ./warehouse/logs:/var/log/clickhouse-server
+      - ./warehouse/db/data:/var/lib/clickhouse
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "localhost:8123/ping"]
       interval: 30s
@@ -109,13 +106,11 @@ services:
     image: postgres
     container_name: dashboard_db
     volumes:
-      - ${DASHBOARD_DB_DIR}:/var/lib/postgresql/data
+      -./dashboard/db/data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "${DASHBOARD_DB_PORT}:${POSTGRES_PORT}"
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
       interval: 5s
