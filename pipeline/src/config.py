@@ -9,7 +9,6 @@ class WarehouseConfig:
     db: str
     user: str
     password: str
-    local_tz: str
 
 
 @dataclass
@@ -17,6 +16,15 @@ class APIConf:
     coin_id: str
     url: str
     key: str
+
+
+@dataclass
+class StageDBConf:
+    host: str
+    port: int
+    db: str
+    user: str
+    password: str
 
 
 def get_api_conf() -> APIConf:
@@ -34,5 +42,14 @@ def get_warehouse_conf() -> WarehouseConfig:
         db=os.getenv('CLICKHOUSE_DB', ''),
         user=os.getenv('CLICKHOUSE_USER', ''),
         password=os.getenv('CLICKHOUSE_PASSWORD', ''),
-        local_tz=os.getenv('LOCAL_TZ', 'UTC'),
+    )
+
+
+def get_stagedb_conf() -> StageDBConf:
+    return StageDBConf(
+        host=os.getenv('STAGEDB_HOST', ''),
+        port=int(os.getenv('STAGEDB_PORT', '27017')),
+        db=os.getenv('STAGEDB_DB', ''),
+        user=os.getenv('STAGEDB_USER', ''),
+        password=os.getenv('STAGEDB_PASSWORD', ''),
     )

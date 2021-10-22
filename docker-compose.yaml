@@ -1,9 +1,11 @@
-version: '3.3'
+version: '3.4'
 
 services:
   pipeline:
     depends_on:
       warehouse:
+        condition: service_healthy
+      stagedb:
         condition: service_healthy
     image: pipeline
     container_name: pipeline
@@ -24,6 +26,33 @@ services:
       CLICKHOUSE_USER: ${CLICKHOUSE_USER}
       CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
       CLICKHOUSE_PORT: ${CLICKHOUSE_PORT}
+      STAGEDB_USER: ${STAGEDB_USER}
+      STAGEDB_PASSWORD: ${STAGEDB_PASSWORD}
+      STAGEDB_DB: ${STAGEDB_DB}
+      STAGEDB_PORT: ${STAGEDB_PORT}
+      STAGEDB_HOST: ${STAGEDB_HOST}
+    networks:
+      - default
+  
+  stagedb:
+    image: mongo:4.0.8
+    container_name: stagedb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${STAGEDB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${STAGEDB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${STAGEDB_DB}
+      MONGODB_DATA_DIR: /data/db
+    ports:
+      - "8010:${STAGEDB_PORT}"
+    volumes:
+      - ${STAGEDB_DB_DIR}:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:${STAGEDB_PORT}/${STAGEDB_DB} --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
     networks:
       - default
 

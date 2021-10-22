@@ -3,8 +3,11 @@ import logging
 import clickhouse_driver
 
 import src.etl as etl
-from src.config import get_api_conf, get_warehouse_conf
+from src.config import (get_api_conf,
+                        get_warehouse_conf,
+                        get_stagedb_conf)
 from src.db import WarehouseConnection
+from src.stagedb import StageDBConnection
 
 
 # Retrieve invironment variables
@@ -36,6 +39,15 @@ def run_etl_cycle() -> None:
             f"API returned status code {status},\
             cannot retrieve answer.")
         exit(0)
+
+    # Perform staging into backup starage
+    with StageDBConnection(get_stagedb_conf()).managed_client() as db:
+
+        # Create collectioncoin_info if not created yet, then retrieve
+        collection = db['exchange']
+        collection.insert_one({
+            "data": coin_info,
+            "timestamp": timestamp})
 
     with WarehouseConnection(get_warehouse_conf()).managed_client() as cli:
         # ------------------
