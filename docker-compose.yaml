@@ -106,7 +106,7 @@ services:
     image: postgres
     container_name: dashboard_db
     volumes:
-      -./dashboard/db/data:/var/lib/postgresql/data
+      - ./dashboard/db/data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
