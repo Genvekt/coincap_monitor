@@ -3,7 +3,7 @@ import logging
 import clickhouse_driver
 
 import src.etl as etl
-from src.config import (get_api_conf, 
+from src.config import (get_api_conf,
                         get_warehouse_conf,
                         get_stagedb_conf)
 from src.db import WarehouseConnection
