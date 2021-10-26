@@ -64,18 +64,41 @@ cd coincap_monitor
 ```
 2. Create `.env` file with the following envairoment parameters:
 - `API_KEY`: key that you must retrieve from [here](https://coincap.io/api-key)
-- `LOCAL_TZ`: Suitable timezone name from [this](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568) list
-- `COIN_ID`: Id of a coin to monitor used by CoinCap API
+- `API_URL`: url to the CoinCap API
+- `STAGEDB_HOST`, `STAGEDB_DB`, `STAGEDB_USER`, `STAGEDB_PASSWORD`, `STAGEDB_PORT`: MongoDB access data
+- `CLICKHOUSE_HOST`, `CLICKHOUSE_DB`, `CLICKHOUSE_USER`, `CLICKHOUSE_PASSWORD`, `CLICKHOUSE_PORT`: ClickHouse access data
+- `POSTGRES_HOST`, `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_PORT`: PostgreSQL access data
 
     Example `.env` file:
 
     ```
-    API_KEY='{YOUR_API_KEY}'
-    LOCAL_TZ='Europe/Moscow'
-    COIN_ID='bitcoin'
+    API_KEY={YOUR_API_KEY}
+    API_URL=http://api.coincap.io/v2
+
+
+    STAGEDB_HOST=stagedb
+    STAGEDB_DB=stagedbdb
+    STAGEDB_USER=stagedbuser
+    STAGEDB_PASSWORD={YOUR_MONGODB_PASSWORD}
+    STAGEDB_PORT=27017
+
+    CLICKHOUSE_HOST=warehouse
+    CLICKHOUSE_DB=clickhousedb
+    CLICKHOUSE_USER=clickhouseuser
+    CLICKHOUSE_PASSWORD={YOUR_CLICKHOUSE_PASSWORD}
+    CLICKHOUSE_PORT=9000
+
+
+    POSTGRES_HOST=dashboard_db
+    POSTGRES_DB=postgres
+    POSTGRES_USER=postgres
+    POSTGRES_PASSWORD={YOUR_POSTGRESQL_PASSWORD}
+    POSTGRES_PORT=5432
+
     ```
 3. Run application
 ```
+docker network create CoinCapNet
 docker-compose run --build -d
 ```
 4. Stop application:
