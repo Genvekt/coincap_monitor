@@ -21,12 +21,13 @@ The following system diagram represents the project structure. From the picture,
 - **stagedb** plays the role of a backup storage for raw data (MongoDB)
 - **dashboard** generates and shows reports out of cleaned data (Metabase)
 
+Additionally, dashboard uses PostgreSQL database container as its internal storage.
+
 ![system design](https://github.com/Genvekt/coincap_monitor/blob/main/assets/coincap_monitor.png)
 
 ## Project Structure
 
 ```
-├── assets
 ├── docs
 │
 ├── pipeline
@@ -38,13 +39,17 @@ The following system diagram represents the project structure. From the picture,
 │   │   ├── config.py     # Enviroment parsers
 │   │   ├── db.py         # Warehouse management
 │   │   ├── etl.py        # ETL functions
-│   │   └── run.py        # Pipeline script
+│   │   ├── run.py        # Pipeline script
+│   │   └── stagedb.py    # StageDB management
 │   │
 │   └── tests             # Unittests for ETL source code
 │
 ├── warehouse
 │   ├── db                # Warehouse database files (Clickhouse)
 │   └── logs              # Logs for warehouse service
+│
+├── stagedb
+│   └── db                # StageDB database files (MongoDB)
 │
 └── dashboard
     ├── db                # Dashboard database files (PostgreSQL)
