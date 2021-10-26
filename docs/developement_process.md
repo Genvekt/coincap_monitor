@@ -24,14 +24,13 @@ In this project I also practise the agile workflow. To do it, I define the tasks
 with Theme - Epic - User Story - Task scheme.
 For the MVP, next definition covers all aspects needed:
 
-|Theme| Epic | User Stopy | Task |
-|-----|------|------------|------|
-|     |      |1. As a user I want to see bitcoin price in USD so that I can easily understand how much it is without googling.|  |
-|     |      |2. As a user I want dashbord to update at least every 5 min so that I can know fresh state of bitcoin price. | |
-|     |      |3. As a user I want to see the history of bitcoin price for last 24 hours so that I can understand the pattern of its price change. | |
-|     |      |4. As a user I want to see the lowest/highest price for the last 24 hours so  that I can understand the current variance of price change.| |
-|     |      |5. As a user I want to see historical data as scater plot so that I can easily see patterns in data.| |
-|     |      |6. As a user I want historical data be present on revisit so that I can compare new data with old one.| |
+User Story:
+1. As a user I want to see bitcoin price in USD so that I can easily understand how much it is without googling.
+2. As a user I want dashbord to update at least every 5 min so that I can know fresh state of bitcoin price. 
+3. As a user I want to see the history of bitcoin price for last 24 hours so that I can understand the pattern of its price change.
+4. As a user I want to see the lowest/highest price for the last 24 hours so  that I can understand the current variance of price change.
+5. As a user I want to see historical data as scater plot so that I can easily see patterns in data.
+6. As a user I want historical data be present on revisit so that I can compare new data with old one.
 
 ___
 ## System structure
@@ -93,3 +92,6 @@ Script with E+T stages suits 1 and 2 user stories.
 
 ### What next:
 Develop L stage -> create warehouse container and implement user stories 3 and 4.
+
+## Final System
+Other components are connected to pipeline as docker containers. There was problems with database configurations, but current state of the project works as expected and implements all initial User Stories.
